@@ -21,36 +21,26 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-const operations = [
-  { id: 1, name: "Quản lý người dùng", icon: Users },
-  { id: 2, name: "Quản lý quyền", icon: Key },
-  { id: 3, name: "Quản lý vai trò", icon: Shield },
-  { id: 4, name: "Giám sát hệ thống", icon: Activity },
-  { id: 5, name: "Cảnh báo an ninh", icon: AlertTriangle },
-  { id: 6, name: "Kiểm tra bảo mật", icon: FileCheck },
-  { id: 7, name: "Cấu hình hệ thống", icon: Settings },
-];
-
-const functions = [
-  { id: 1, name: "Đăng nhập/Đăng xuất", icon: LogOut },
-  { id: 2, name: "Xác thực người dùng", icon: Lock },
-  { id: 3, name: "Phân quyền truy cập", icon: Key },
-  { id: 4, name: "Quản lý phiên làm việc", icon: Activity },
-  { id: 5, name: "Theo dõi đăng nhập", icon: Eye },
-  { id: 6, name: "Thông báo bảo mật", icon: Bell },
-  { id: 7, name: "Tìm kiếm nhật ký", icon: Search },
-  { id: 8, name: "Quản lý cơ sở dữ liệu", icon: Database },
-  { id: 9, name: "Quản lý mạng", icon: Network },
-  { id: 10, name: "Quản lý máy chủ", icon: Server },
-  { id: 11, name: "Báo cáo an ninh", icon: FileCheck },
-  { id: 12, name: "Cấu hình firewall", icon: Shield },
-  { id: 13, name: "Cài đặt hệ thống", icon: Settings },
+const menuItems = [
+  { id: 1, name: "Tổng quan", icon: Activity, badge: null },
+  { id: 2, name: "Đánh giá", icon: FileCheck, badge: null },
+  { id: 3, name: "Quét website", icon: Network, badge: null },
+  { id: 4, name: "Quản lý file", icon: Database, badge: null },
+  { id: 5, name: "Nhập dữ liệu", icon: Server, badge: null },
+  { id: 6, name: "Tuân thủ", icon: Shield, badge: null },
+  { id: 7, name: "Mối đe dọa", icon: AlertTriangle, badge: 8 },
+  { id: 8, name: "Đào tạo", icon: Users, badge: null },
+  { id: 9, name: "Thiết bị", icon: Lock, badge: null },
+  { id: 10, name: "Thông báo", icon: Bell, badge: 6 },
+  { id: 11, name: "Báo cáo", icon: FileCheck, badge: null },
+  { id: 12, name: "So sánh", icon: Eye, badge: null },
+  { id: 13, name: "Cài đặt", icon: Settings, badge: null },
+  { id: 14, name: "Trợ giúp", icon: Search, badge: null },
 ];
 
 export default function Home() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
-  const [activeOperation, setActiveOperation] = useState(1);
-  const [activeFunction, setActiveFunction] = useState(1);
+  const [activeMenu, setActiveMenu] = useState(1);
 
   return (
     <div className="min-h-screen bg-neutral-900 flex">
@@ -73,49 +63,27 @@ export default function Home() {
         </div>
 
         <div className="flex-1 overflow-y-auto py-4">
-          <div className="px-4 mb-4">
-            {sidebarOpen && (
-              <h2 className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-3">
-                Thao tác
-              </h2>
-            )}
+          <div className="px-4">
             <div className="space-y-1">
-              {operations.map((op) => (
+              {menuItems.map((item) => (
                 <button
-                  key={op.id}
-                  onClick={() => setActiveOperation(op.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
-                    activeOperation === op.id
+                  key={item.id}
+                  onClick={() => setActiveMenu(item.id)}
+                  className={`w-full flex items-center justify-between gap-3 px-3 py-2.5 rounded-lg transition-colors ${
+                    activeMenu === item.id
                       ? 'bg-emerald-600 text-white'
                       : 'text-neutral-400 hover:bg-neutral-700 hover:text-white'
                   }`}
                 >
-                  <op.icon className="w-5 h-5 flex-shrink-0" />
-                  {sidebarOpen && <span className="text-sm font-medium truncate">{op.name}</span>}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="px-4 mt-6">
-            {sidebarOpen && (
-              <h2 className="text-xs font-semibold text-neutral-500 uppercase tracking-wider mb-3">
-                Chức năng
-              </h2>
-            )}
-            <div className="space-y-1">
-              {functions.map((func) => (
-                <button
-                  key={func.id}
-                  onClick={() => setActiveFunction(func.id)}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg transition-colors ${
-                    activeFunction === func.id
-                      ? 'bg-blue-600 text-white'
-                      : 'text-neutral-400 hover:bg-neutral-700 hover:text-white'
-                  }`}
-                >
-                  <func.icon className="w-5 h-5 flex-shrink-0" />
-                  {sidebarOpen && <span className="text-sm font-medium truncate">{func.name}</span>}
+                  <div className="flex items-center gap-3">
+                    <item.icon className="w-5 h-5 flex-shrink-0" />
+                    {sidebarOpen && <span className="text-sm font-medium truncate">{item.name}</span>}
+                  </div>
+                  {sidebarOpen && item.badge && (
+                    <span className="px-2 py-0.5 text-xs font-medium bg-red-500 text-white rounded-full">
+                      {item.badge}
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
@@ -127,7 +95,7 @@ export default function Home() {
         <header className="h-16 bg-neutral-800 border-b border-neutral-700 flex items-center justify-between px-6">
           <div>
             <h1 className="text-xl font-bold text-white">
-              {operations.find(o => o.id === activeOperation)?.name}
+              {menuItems.find(m => m.id === activeMenu)?.name}
             </h1>
           </div>
           <div className="flex items-center gap-4">
